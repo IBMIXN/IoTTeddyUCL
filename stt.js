@@ -107,7 +107,7 @@ module.exports = function(RED) {
 				node.status({fill:"grey",shape:"dot",text:"Data Received"});
 				Stream.feedAudioContent(msg.payload);
 				
-				if(msg.complete == true){
+				if(msg.hasOwnProperty('complete')){
 					clearTimeout(timeout);
 					pushSTT();
 				}
@@ -116,11 +116,12 @@ module.exports = function(RED) {
 		
 		//Tidy up used resources before destroying stream
 		node.on('close', function(){
-			if (Model != null){
-				Deepspeech.FreeModel(Model);
-			}
+			node.status({});
 			if (Stream != null){
 				Deepspeech.FreeStream(Stream);
+			}
+			if (Model != null){
+				Deepspeech.FreeModel(Model);
 			}
 		});
     }

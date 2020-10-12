@@ -66,7 +66,10 @@ module.exports = function(RED) {
 				node.send(node.msg);
 			}
 		});
-
+		
+		node.on('close', function(){
+			node.status({});
+		});
     }
 	
     RED.nodes.registerType("node-vad",NodeRedVad);
